@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+<html lang="es-ES">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>El Ahorcado</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 px-4 py-8 font-sans text-slate-800">
+
+  <div class="mx-auto max-w-5xl">
+
+    <!-- CABECERA -->
+    <header class="mb-8 text-center text-white">
+
+      <h1 class="mb-2 text-4xl font-extrabold tracking-tight md:text-5xl">
+        🎯 El Ahorcado
+      </h1>
+
+      <p class="text-blue-200">
+        Adivina la palabra antes de quedarte sin intentos
+      </p>
+
+      <button
+        onclick="empezar()"
+        class="mt-6 rounded-xl bg-blue-500 px-8 py-3 font-bold text-white shadow-lg transition duration-200 hover:-translate-y-1 hover:bg-blue-400 hover:shadow-blue-500/30"
+      >
+        ▶ Empezar partida
+      </button>
+
+    </header>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="grid gap-6 md:grid-cols-2">
+
+      <!-- PALABRA -->
+      <section class="rounded-3xl bg-white p-6 shadow-2xl">
+
+        <div class="mb-6 text-center">
+
+          <h2 class="mb-2 text-sm font-bold uppercase tracking-widest text-blue-600">
+            Palabra secreta
+          </h2>
+
+          <div
+            id="palabra"
+            class="flex min-h-[80px] items-center justify-center rounded-2xl bg-slate-100 px-4 text-3xl font-extrabold tracking-[8px] text-slate-800 md:text-4xl"
+          >
+            <span>_ _ _ _ _</span>
+          </div>
+
+        </div>
+
+
+        <!-- AHORCADO -->
+        <div class="rounded-2xl bg-slate-50 p-4">
+
+          <h2 class="mb-3 text-center text-lg font-bold text-slate-700">
+            Ahorcado
+          </h2>
+
+          <svg
+            id="svg-ahorcado"
+            width="200"
+            height="250"
+            viewBox="0 0 200 250"
+            class="mx-auto rounded-xl border-2 border-slate-200 bg-white shadow-sm"
+          >
+
+            <!-- Poste -->
+            <line
+              x1="10"
+              y1="240"
+              x2="150"
+              y2="240"
+              stroke="black"
+              stroke-width="4"
+            />
+
+            <line
+              x1="40"
+              y1="240"
+              x2="40"
+              y2="20"
+              stroke="black"
+              stroke-width="4"
+            />
+
+            <line
+              x1="40"
+              y1="20"
+              x2="120"
+              y2="20"
+              stroke="black"
+              stroke-width="4"
+            />
+
+            <line
+              x1="120"
+              y1="20"
+              x2="120"
+              y2="50"
+              stroke="black"
+              stroke-width="4"
+            />
+
+            <!-- Cabeza -->
+            <circle
+              id="cabeza"
+              class="parte-cuerpo"
+              cx="120"
+              cy="70"
+              r="20"
+              stroke="black"
+              stroke-width="4"
+              fill="none"
+              style="display: none"
+            />
+
+            <!-- Tronco -->
+            <line
+              id="tronco"
+              class="parte-cuerpo"
+              x1="120"
+              y1="90"
+              x2="120"
+              y2="150"
+              stroke="black"
+              stroke-width="4"
+              style="display: none"
+            />
+
+            <!-- Brazo izquierdo -->
+            <line
+              id="brazo-izq"
+              class="parte-cuerpo"
+              x1="120"
+              y1="110"
+              x2="90"
+              y2="130"
+              stroke="black"
+              stroke-width="4"
+              style="display: none"
+            />
+
+            <!-- Brazo derecho -->
+            <line
+              id="brazo-der"
+              class="parte-cuerpo"
+              x1="120"
+              y1="110"
+              x2="150"
+              y2="130"
+              stroke="black"
+              stroke-width="4"
+              style="display: none"
+            />
+
+            <!-- Pierna izquierda -->
+            <line
+              id="pierna-izq"
+              class="parte-cuerpo"
+              x1="120"
+              y1="150"
+              x2="90"
+              y2="190"
+              stroke="black"
+              stroke-width="4"
+              style="display: none"
+            />
+
+            <!-- Pierna derecha -->
+            <line
+              id="pierna-der"
+              class="parte-cuerpo"
+              x1="120"
+              y1="150"
+              x2="150"
+              y2="190"
+              stroke="black"
+              stroke-width="4"
+              style="display: none"
+            />
+
+          </svg>
+
+
+          <!-- ERRORES -->
+          <div class="mt-4 text-center">
+
+            <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">
+              Errores
+            </p>
+
+            <div
+              id="error"
+              class="mt-1 text-2xl font-extrabold text-red-500"
+            >
+              0/6
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- TECLADO -->
+      <section class="rounded-3xl bg-white p-6 shadow-2xl">
+
+        <div class="mb-6 text-center">
+
+          <h2 class="text-2xl font-bold text-slate-800">
+            🔤 Elige una letra
+          </h2>
+
+          <p class="mt-1 text-sm text-slate-500">
+            Pulsa una letra para intentar adivinar la palabra
+          </p>
+
+        </div>
+
+        <div
+          id="teclado"
+          class="mx-auto grid max-w-md grid-cols-5 gap-2"
+        >
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <!-- PIE -->
+    <footer class="mt-8 text-center text-sm text-blue-200">
+      <p>
+        Juego del Ahorcado · JavaScript + HTML + Tailwind CSS
+      </p>
+    </footer>
+
+  </div>
+<dialog
+  id="dialog"
+  class="w-[90%] max-w-md rounded-3xl border-0 p-0 shadow-2xl backdrop:bg-black/60"
+>
+  <div class="bg-white p-8 text-center">
+
+    <div class="mb-4 text-6xl">
+      🎮
+    </div>
+
+    <h2
+      id="dialog-titulo"
+      class="mb-3 text-3xl font-extrabold text-slate-800"
+    >
+    </h2>
+
+    <p
+      id="dialog-mensaje"
+      class="mb-6 text-slate-600"
+    >
+    </p>
+
+    <button
+      onclick="cerrarDialog()"
+      class="rounded-xl bg-blue-600 px-8 py-3 font-bold text-white transition hover:bg-blue-700"
+    >
+      Continuar
+    </button>
+
+  </div>
+</dialog>
+
+  <!-- JavaScript -->
+  <script src="ahorcado-cristian.js"></script>
+
+</body>
+
+</html>
+
